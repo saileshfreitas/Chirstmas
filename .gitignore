@@ -1,0 +1,73 @@
+import random
+
+# Function to generate a Christmas Bingo card
+def generate_bingo_card():
+    items = [
+        "Santa Claus", "Snowman", "Reindeer", "Christmas Tree", "Candy Cane",
+        "Mistletoe", "Jingle Bells", "Gingerbread House", "Christmas Lights", "Elf",
+        "Hot Cocoa", "Stocking", "Nutcracker", "Christmas Wreath", "Christmas Present", "Angel", "Fireplace"
+    ]
+    random.shuffle(items)
+    return [items[i:i + 5] for i in range(0, 25, 5)]
+
+# Function to display the Bingo card
+def display_card(card):
+    print("Let's play Christmas Bingo!")
+    print("--------------------------")
+    for row in card:
+        print("| " + " | ".join(row) + " |")
+        print("--------------------------")
+
+# Function to call out a random item
+def call_out_item():
+    items = [
+        "Santa Claus", "Snowman", "Reindeer", "Christmas Tree", "Candy Cane",
+        "Mistletoe", "Jingle Bells", "Gingerbread House", "Christmas Lights", "Elf",
+        "Hot Cocoa", "Stocking", "Nutcracker", "Christmas Wreath", "Christmas Present", "Angel", "Fireplace"
+    ]
+    return random.choice(items)
+
+# Function to check for a winner
+def check_winner(card):
+    # Check rows
+    for row in card:
+        if all(item == "X" for item in row):
+            return True
+
+    # Check columns
+    for i in range(5):
+        if all(card[j][i] == "X" for j in range(5)):
+            return True
+
+    # Check diagonals
+    if all(card[i][i] == "X" for i in range(5)) or all(card[i][4 - i] == "X" for i in range(5)):
+        return True
+
+    return False
+
+# Main game loop
+def play_game():
+    bingo_card = generate_bingo_card()
+    display_card(bingo_card)
+    input("Press Enter to start the game!")
+
+    while True:
+        called_item = call_out_item()
+        print("\nNext item is:", called_item)
+        mark_item = input("Mark this item on your card (y/n): ").lower()
+
+        # Mark the item on the card
+        for row in bingo_card:
+            if called_item in row:
+                index = row.index(called_item)
+                row[index] = "X"
+
+        display_card(bingo_card)
+
+        # Check for a winner
+        if check_winner(bingo_card):
+            print("Congratulations! You got BINGO!")
+            break
+
+# Start the game
+play_game()
